@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Addyti — unboxed and unbothered',
+  description = 'Addyti: unboxed and unbothered. Travel, life, and the things worth keeping.',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = Astro.url.pathname;
+const nav = [
+  { href: `${base}/about/`, label: 'About' },
+  { href: `${base}/journal/`, label: 'Journal' },
+  { href: `${base}/shop/`, label: 'Shop' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href={`${base}/`}>Addyti</a>
+      <nav class="site-nav" aria-label="Main">
+        {nav.map((item) => (
+          <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <span>Addyti — unboxed and unbothered</span>
+      <span>© {new Date().getFullYear()}</span>
+    </footer>
+  </body>
+</html>
